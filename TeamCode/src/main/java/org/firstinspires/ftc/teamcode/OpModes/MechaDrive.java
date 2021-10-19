@@ -4,8 +4,6 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name = "MechaDrive")
 public class MechaDrive extends OpMode {
@@ -13,8 +11,10 @@ public class MechaDrive extends OpMode {
     private DcMotor rightRear;
     private DcMotor leftFront;
     private DcMotor leftRear;
-    private Servo flipper;
-    private DcMotor liftMotor;
+    private DcMotor arm;
+    private DcMotor duck;
+    // private Servo flipper;
+    // private DcMotor liftMotor;
     public static final double MID_SERVO       =  0.5 ;
     public static final double LIFT_UP_POWER    =  0.45 ;
     public static final double LIFT_DOWN_POWER  = -0.45 ;
@@ -26,10 +26,12 @@ public class MechaDrive extends OpMode {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        flipper = hardwareMap.get(Servo.class,"flipper");
-        liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
-       // rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-       // rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+        arm = hardwareMap.get(DcMotor.class,"arm");
+        duck = hardwareMap.get(DcMotor.class, "duck");
+        //flipper = hardwareMap.get(Servo.class,"flipper");
+        //liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+        // rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        // rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         int pos = 0;
         int pos2 = 0;
 
@@ -37,6 +39,19 @@ public class MechaDrive extends OpMode {
     }
     @Override
     public void loop() {
+        drive();
+        arm();
+        duck();
+
+    }
+    /*
+     * Code to run ONCE after the driver hits STOP
+     */
+    @Override
+    public void stop() {
+    }
+    //-----------------------------------------Drive
+    public void drive() {
         double left;
         double right;
         double rf = -gamepad1.right_stick_y -gamepad1.right_stick_x -gamepad1.left_stick_x;
@@ -57,11 +72,35 @@ public class MechaDrive extends OpMode {
         }
 
     }
+    //-------------------------Arm-------------------
+    public void arm(){
 
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
-    @Override
-    public void stop() {
+        if(gamepad2.right_trigger>=0.1){
+            arm.setPower( -.4);
+        }
+
+        else if(gamepad2.left_trigger>=0.1){
+            arm.setPower(.4);
+        }
+        else {
+            arm.setPower(0);
+        }
+
+
+    }
+    public void duck(){
+
+        if(gamepad2.right_bumper){
+            duck.setPower(/*-gamepad2.right_trigger*/ -.4);
+        }
+
+        else if(gamepad2.left_bumper){
+            duck.setPower(.4);
+        }
+        else {
+            duck.setPower(0);
+        }
+
+
     }
 }
