@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name = "MechaDrive")
 public class MechaDrive extends OpMode {
@@ -13,7 +15,8 @@ public class MechaDrive extends OpMode {
     private DcMotor leftRear;
     private DcMotor arm;
     private DcMotor duck;
-    // private Servo flipper;
+    private Servo bucket;
+    private CRServo flipper;
     // private DcMotor liftMotor;
     public static final double MID_SERVO       =  0.5 ;
     public static final double LIFT_UP_POWER    =  0.45 ;
@@ -28,7 +31,8 @@ public class MechaDrive extends OpMode {
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
         arm = hardwareMap.get(DcMotor.class,"arm");
         duck = hardwareMap.get(DcMotor.class, "duck");
-        //flipper = hardwareMap.get(Servo.class,"flipper");
+        bucket = hardwareMap.get(Servo.class,"bucket");
+        flipper =hardwareMap.get(CRServo.class,"flipper");
         //liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         // rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         // rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -42,6 +46,8 @@ public class MechaDrive extends OpMode {
         drive();
         arm();
         duck();
+        bucket();
+        flipper();
 
     }
     /*
@@ -102,5 +108,23 @@ public class MechaDrive extends OpMode {
         }
 
 
+    }
+
+    public void bucket(){
+        if(gamepad2.a) {
+            bucket.setPosition(0.5);
+        }
+        else{
+            bucket.setPosition(0);
+        }
+    }
+
+    public void flipper() {
+        if(gamepad2.b){
+            flipper.setPower(1);
+        }
+        else {
+            flipper.setPower(0);
+        }
     }
 }

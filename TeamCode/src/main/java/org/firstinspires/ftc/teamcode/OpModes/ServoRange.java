@@ -18,12 +18,16 @@ public class ServoRange extends LinearOpMode {
      */
     @Override
     public void runOpMode() {
-        flipper = hardwareMap.get(Servo.class, "regular servo");
-
+        flipper = hardwareMap.get(Servo.class, "flipper");
+        final double MAX_POS     =  1.0;
+         final double MIN_POS     =  0.0;
         // Put initialization blocks here.
         flipper.scaleRange(0.2, 0.8);
         flipper.setPosition(0.5);
         flipper.setDirection(Servo.Direction.FORWARD);
+        double  position = (MAX_POS - MIN_POS) / 2;
+
+
         waitForStart();
         if (opModeIsActive()) {
             // Put run blocks here.
@@ -38,6 +42,9 @@ public class ServoRange extends LinearOpMode {
                 flipper.setPosition(0.2);
                 flipper.setDirection(Servo.Direction.REVERSE);
                 sleep(1000);
+                //telemetry
+                telemetry.addData("Servo Position", "%5.2f", position);
+                telemetry.addData(">", "Press Stop to end test." );
                 telemetry.update();
             }
         }
