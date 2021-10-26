@@ -11,20 +11,20 @@ package org.firstinspires.ftc.teamcode;
 @Autonomous(name = "ServoRange")
 public class ServoRange extends LinearOpMode {
 
-    private Servo flipper;
+    private Servo bucket;
 
     /**
      * This function is executed when this Op Mode is selected from the Driver Station.
      */
     @Override
     public void runOpMode() {
-        flipper = hardwareMap.get(Servo.class, "flipper");
+        bucket = hardwareMap.get(Servo.class, "bucket");
         final double MAX_POS     =  1.0;
          final double MIN_POS     =  0.0;
         // Put initialization blocks here.
-        flipper.scaleRange(0.2, 0.8);
-        flipper.setPosition(0.5);
-        flipper.setDirection(Servo.Direction.FORWARD);
+        bucket.scaleRange(0.2, 0.8);
+        bucket.setPosition(0.5);
+        bucket.setDirection(Servo.Direction.FORWARD);
         double  position = (MAX_POS - MIN_POS) / 2;
 
 
@@ -33,14 +33,14 @@ public class ServoRange extends LinearOpMode {
             // Put run blocks here.
             while (opModeIsActive()) {
                 // Put loop blocks here.
-                flipper.setPosition(0.2);
-                flipper.setDirection(Servo.Direction.REVERSE);
+                bucket.setPosition(0.2);
+                bucket.setDirection(Servo.Direction.REVERSE);
                 sleep(1000);
-                flipper.setPosition(0.5);
-                flipper.setDirection(Servo.Direction.FORWARD);
+                bucket.setPosition(0.5);
+                bucket.setDirection(Servo.Direction.FORWARD);
                 sleep(1000);
-                flipper.setPosition(0.2);
-                flipper.setDirection(Servo.Direction.REVERSE);
+                bucket.setPosition(0.2);
+                bucket.setDirection(Servo.Direction.REVERSE);
                 sleep(1000);
                 //telemetry
                 telemetry.addData("Servo Position", "%5.2f", position);
