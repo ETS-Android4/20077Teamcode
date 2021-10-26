@@ -136,13 +136,13 @@ public class MechaDrive extends OpMode {
     }
 
     public void bucket() {
-        if (gamepad1.x) {
+        if (gamepad2.x) {
             if (!buttonDown) {
                 position -= 0.05;
                 bucket.setPosition(position);
             }
             buttonDown = true;
-        } else if (gamepad1.y) {
+        } else if (gamepad2.y) {
             if (!buttonDown) {
                 position += 0.05;
                 bucket.setPosition(position);
