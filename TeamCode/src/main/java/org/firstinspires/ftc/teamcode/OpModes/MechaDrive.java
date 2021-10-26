@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
@@ -26,7 +27,7 @@ public class MechaDrive extends OpMode {
     public static final double LIFT_UP_POWER    =  0.45 ;
     public static final double LIFT_DOWN_POWER  = -0.45 ;
      //for bucket servo
-     private double position=0;
+     private double position=0.5;
     private boolean buttonDown=false;
     DecimalFormat df;
 
@@ -47,8 +48,8 @@ public class MechaDrive extends OpMode {
         //Continuous servo for intake
         flipper =hardwareMap.get(CRServo.class,"flipper");
         //liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
-        // rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
-        // rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
+         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
+        rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //More servo stuff
         bucket.setPosition(position);
@@ -80,24 +81,24 @@ public class MechaDrive extends OpMode {
     }
     //-----------------------------------------Drive
     public void drive() {
-        double left;
-        double right;
-        double rf = -gamepad1.right_stick_y -gamepad1.right_stick_x -gamepad1.left_stick_x;
-        double rr = -gamepad1.right_stick_y + gamepad1.right_stick_x -gamepad1.left_stick_x;
-        double lf = gamepad1.right_stick_y + gamepad1.right_stick_x  -gamepad1.left_stick_x;
-        double lr = gamepad1.right_stick_y -gamepad1.right_stick_x -gamepad1.left_stick_x;
-        if(Math.abs(rf) >= 0.1 || Math.abs(rr) >= 0.1 || Math.abs(lf) >= 0.1 || Math.abs(lr) >= 0.1){
-            rightFront.setPower(rf);
-            rightRear.setPower(rr);
-            leftRear.setPower(lr);
-            leftFront.setPower(lf);
-        }
-        else{
-            rightFront.setPower(0);
-            rightRear.setPower(0);
-            leftRear.setPower(0);
-            leftFront.setPower(0);
-        }
+        double y = -gamepad1.left_stick_y; // Remember, this is reversed!
+        double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+        double rx = gamepad1.right_stick_x;
+
+        // Denominator is the largest motor power (absolute value) or 1
+        // This ensures all the powers maintain the same ratio, but only when
+        // at least one is out of the range [-1, 1]
+        double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
+        double frontLeftPower = (y + x + rx) / denominator;
+        double backLeftPower = (y - x + rx) / denominator;
+        double frontRightPower = (y - x - rx) / denominator;
+        double backRightPower = (y + x - rx) / denominator;
+
+        leftFront.setPower(frontLeftPower);
+        leftRear.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
+        rightRear.setPower(backRightPower);
+
 
     }
     //-------------------------Arm-------------------
