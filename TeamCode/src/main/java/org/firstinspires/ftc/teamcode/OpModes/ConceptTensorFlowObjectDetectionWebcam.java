@@ -61,8 +61,8 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private DcMotor rightRear;
     private DcMotor leftFront;
     private DcMotor leftRear;
-    private Servo flipper;
-    private DcMotor liftMotor;
+   // private Servo flipper;
+    //private DcMotor liftMotor;
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
    *  0: Ball,
@@ -115,8 +115,8 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-        flipper = hardwareMap.get(Servo.class,"flipper");
-        liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+      //  flipper = hardwareMap.get(Servo.class,"flipper");
+       // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -163,7 +163,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                         move(1000,1000,1000,1000);
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
-                          move(10,10,10,10);
+                          move(10,10,-10,-10);
                           move(1000,1000,1000,1000);
                         i++;
                       }

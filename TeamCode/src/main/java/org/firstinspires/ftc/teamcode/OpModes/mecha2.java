@@ -20,6 +20,8 @@ public class mecha2 extends LinearOpMode {
         DcMotor leftRear = hardwareMap.dcMotor.get("leftRear");
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor rightRear = hardwareMap.dcMotor.get("rightRear");
+        DcMotor arm = hardwareMap.dcMotor.get("arm");
+        DcMotor arm2 = hardwareMap.dcMotor.get("arm2");
 
         // Reverse the right side motors
         // Reverse left motors if you are using NeveRests
@@ -48,6 +50,24 @@ public class mecha2 extends LinearOpMode {
             leftRear.setPower(backLeftPower);
             rightFront.setPower(frontRightPower);
             rightRear.setPower(backRightPower);
+
+            if (gamepad1.left_bumper) {
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                arm.setTargetPosition(-1000);
+
+                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                arm.setPower(0.6);
+                arm2.setPower(-0.6);
+                while (arm.isBusy()) {
+                    sleep(50);
+                }
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                arm.setPower(0);
+                arm2.setPower(0);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
@@ -8,6 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
 
 import java.text.DecimalFormat;
 
@@ -22,11 +24,8 @@ public class MechaDrive extends OpMode {
     private DcMotor duck;
     private Servo bucket;
     private CRServo flipper;
-    // private DcMotor liftMotor;
 
-    public static final double LIFT_UP_POWER    =  0.45 ;
-    public static final double LIFT_DOWN_POWER  = -0.45 ;
-     //for bucket servo
+     //for bucket servo to start at a specific angle
      private double position=0.5;
     private boolean buttonDown=false;
     DecimalFormat df;
@@ -48,16 +47,22 @@ public class MechaDrive extends OpMode {
         //Continuous servo for intake
         flipper =hardwareMap.get(CRServo.class,"flipper");
         //liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+
+        //reverse motors for drivetrain
          rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //More servo stuff
+        //set position to start
         bucket.setPosition(position);
+        //set the arm and servo to a start position
+        armServo(100);
+
         df= new DecimalFormat();
         df.setMaximumFractionDigits(2);
         //set arm motors to hold when not in use
-        arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        arm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //arm.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+       // arm2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         int pos = 0;
         int pos2 = 0;
@@ -71,6 +76,9 @@ public class MechaDrive extends OpMode {
         duck();
         bucket();
         flipper();
+        //must set target interger for arm
+        armServo(200);
+        setBucket(0.7);
 
     }
     /*
@@ -100,6 +108,7 @@ public class MechaDrive extends OpMode {
         rightRear.setPower(backRightPower);
 
 
+
     }
     //-------------------------Arm-------------------
     public void arm(){
@@ -107,15 +116,21 @@ public class MechaDrive extends OpMode {
         if(gamepad2.right_trigger>=0.1){
             arm.setPower( -.6);
             arm2.setPower(.6);
+            telemetry.addData("postion",position);
+            telemetry.update();
         }
 
         else if(gamepad2.left_trigger>=0.1){
             arm.setPower(.6);
             arm2.setPower(-.6);
+            telemetry.addData("postion",position);
+            telemetry.update();
         }
         else {
             arm.setPower(0);
             arm.setPower(0);
+            telemetry.addData("postion",position);
+            telemetry.update();
         }
 
 
@@ -123,7 +138,7 @@ public class MechaDrive extends OpMode {
     public void duck(){
 
         if(gamepad2.a){
-            duck.setPower(/*-gamepad2.right_trigger*/ -.4);
+            duck.setPower( -.4);
         }
 
         else if(gamepad2.b){
@@ -153,6 +168,13 @@ public class MechaDrive extends OpMode {
             buttonDown = false;
         }
         telemetry.addData("position: ",df.format(position));
+
+    }
+    //==========================set Bucket---------------
+    public void setBucket(double sp){
+        if(gamepad2.dpad_right){
+            bucket.setPosition(sp);
+        }
     }
 
 
@@ -167,4 +189,72 @@ public class MechaDrive extends OpMode {
             flipper.setPower(0);
         }
     }
-}
+    //===========================armservo--------------------------------------
+    //uses arm and servo together
+    public void armServo(int ae) {
+        //Set to gamepad 2 dpad, could change
+        if (gamepad2.dpad_left) {
+            //reset encoders for arm motor
+            arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            //accept the target position asked for in the function
+            arm.setTargetPosition(ae);
+            //tell arms to move to target position
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            //set the power to get to the target
+            arm.setPower(0.7);
+            arm2.setPower(-0.7);
+            //give the motors 50 milli seconds to make sure they are at the target
+            while (arm.isBusy()) {
+
+
+                //Stop and reset encoder when hit the target, it is redundant but ok
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //move the bucket to the needed angle
+                bucket.setPosition(0.5);
+                //turn on fipper to spit out block
+                //flipper.setPower(1);
+                //leave the flipper on for 70 milliseconds
+                //wait(70);
+                //turn off the flipper
+                //flipper.setPower(0);
+                //Turn off arm
+                arm.setPower(0);
+                arm2.setPower(0);
+            }
+        }
+
+
+        //================bucketArm=============================
+        //input arm encoder and servo angle, should move to arm postion, move bucket and flip block
+       /* public void bucketArm(int encoder,double servo) {
+            arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            arm.setTargetPosition(encoder);
+            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            arm.setPower(0.7);
+            arm2.setPower(-0.7);
+            bucket.setPosition(servo);
+            flipper.setPower(1);
+            while (arm.isBusy()) {
+                //wait(50);
+                arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                arm.setPower(0);
+                arm2.setPower(0);
+            }
+        }*/
+    /*public void lift(int encod){
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        liftMotor.setTargetPosition(encod);
+
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        liftMotor.setPower(0.6);
+        while (liftMotor.isBusy()){
+            sleep(50);
+        }
+        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        liftMotor.setPower(0);
+
+    }*/
+    }}
