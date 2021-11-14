@@ -138,11 +138,11 @@ public class MechaDrive extends OpMode {
     public void duck(){
 
         if(gamepad2.a){
-            duck.setPower( -.4);
+            duck.setPower( -0.7);
         }
 
         else if(gamepad2.b){
-            duck.setPower(.4);
+            duck.setPower(0.7);
         }
         else {
             duck.setPower(0);

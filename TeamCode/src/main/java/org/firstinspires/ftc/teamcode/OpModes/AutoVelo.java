@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-
+@Autonomous
 public class AutoVelo extends LinearOpMode {
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
@@ -34,7 +35,7 @@ public class AutoVelo extends LinearOpMode {
 
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        arm2.setDirection(DcMotorSimple.Direction.REVERSE);
+        arm.setDirection(DcMotorSimple.Direction.REVERSE);
         arm.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         arm2.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
         arm.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -101,8 +102,8 @@ public class AutoVelo extends LinearOpMode {
         arm.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
         arm2.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
-        arm.setVelocity(150);
-        arm2.setVelocity(150);
+        arm.setVelocity(400);
+        arm2.setVelocity(400);
         while (arm.isBusy() && arm2.isBusy()) {
 
             telemetry.addData("Encoder value", arm.getCurrentPosition());
@@ -113,6 +114,8 @@ public class AutoVelo extends LinearOpMode {
         bucket.setPosition(0.7);
         flipper.setPower(-1);
         sleep(200);
+        //may have to add a move back?
+
         arm.setVelocity(0);
         arm2.setVelocity(0);
     }
