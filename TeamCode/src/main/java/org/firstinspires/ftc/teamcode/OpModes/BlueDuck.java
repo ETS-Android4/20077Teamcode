@@ -34,7 +34,7 @@ public class BlueDuck extends LinearOpMode {
         arm = hardwareMap.get(DcMotor.class, "arm");
         arm2 = hardwareMap.get(DcMotor.class, "arm2");
         duck = hardwareMap.get(DcMotor.class, "duck");
-       // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+        // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -48,17 +48,14 @@ public class BlueDuck extends LinearOpMode {
             arm.setPower(-.1);
             arm2.setPower(.1);
             sleep(5);
-
-            move(4000,4000,4000,4000);
-
-//        //move off wall
-//            move(-100, -100, -100, -100);
-//            //turn
-//            move(-925, -925, 1010, 1010);
-//            //move to duck wheel
-//            move(1110,1110,1110,1110);
-//            //stop
-//            move(0, 0, 0, 0);
+            //move off wall
+            move(100, 100, 100, 100);
+            //turn
+            move(925, 925, -1010, -1010);
+            //move to duck wheel
+            move(1110,1110,1110,1110);
+            //stop
+            move(0, 0, 0, 0);
 
             // raise arms and set bucket and flipper
             //bucketArm(1000,0.6);
@@ -70,22 +67,22 @@ public class BlueDuck extends LinearOpMode {
            bucket.setPosition(0.5);
            bucket.setPosition(0.0);
            sleep(4000);*/
-           //move to duck wheel
-           // move(1000,1000,1000,1000);
-//            duck(5000);
-//            //move to square
-//            arm.setPower(-.1);
-//            arm2.setPower(.1);
-//            move(-200,-200,-200,-200);
-//            //turn after duck
-//            move(450,-450,450,-450);
-//            //go towards warehouse
-//            move(-4700,-4700,-4700,-4700);
-//            sleep(5);
-//            arm.setPower(-.1);
-//            arm2.setPower(.1);
-            sleep(26000);
-//            //move(-1000,-1000,-1000,-1000);
+            //move to duck wheel
+            // move(1000,1000,1000,1000);
+            duck(5000);
+            //move to square
+            arm.setPower(-.1);
+            arm2.setPower(.1);
+            move(-200,-200,-200,-200);
+            //turn after duck
+            move(450,-450,450,-450);
+            //go towards warehouse
+            move(-4700,-4700,-4700,-4700);
+            sleep(5);
+            arm.setPower(-.1);
+            arm2.setPower(.1);
+            sleep(13000);
+            //move(-1000,-1000,-1000,-1000);
 
 
 
@@ -119,11 +116,11 @@ public class BlueDuck extends LinearOpMode {
         leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        rightRear.setPower(0.9);
-        rightFront.setPower(0.9);
+        rightRear.setPower(0.3);
+        rightFront.setPower(0.3);
 
-        leftFront.setPower(0.9);
-        leftRear.setPower(0.9);
+        leftFront.setPower(0.3);
+        leftRear.setPower(0.3);
 
         while (leftFront.isBusy() && leftRear.isBusy() && rightFront.isBusy() && rightRear.isBusy()) {
             sleep(50);
@@ -163,8 +160,8 @@ public class BlueDuck extends LinearOpMode {
             arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             arm.setPower(0);
             arm2.setPower(0);
+        }
     }
-}
     //==========================duck
     public void duck(int time){
         duck.setPower(-.4);
@@ -176,7 +173,7 @@ public class BlueDuck extends LinearOpMode {
 
     }
     //----------------------Lift------------
-   public void arms(int encod){
+    public void arms(int encod){
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         arm.setTargetPosition(encod);

@@ -45,17 +45,37 @@ public class O extends LinearOpMode {
         while (opModeIsActive()) {
             //set motors to move to shipping tower.
             //straight
-            arm.setPower(-.1);
-            arm2.setPower(.1);
-            sleep(5);
+            arms(-500);
+            //move off wall
+            move(-450,-450,-450,-450);
+            //turn toward goal
+            move(-350,-350,350,350);
+            //move forward to goal
+            move(-450,-450,-450,-450);
+            score();
+            //back away from goal
+           // move(500,500,500,500);
+            //turn back straight
+           // move(350,350,-350,-350);
+            //back to wall
+            //move(550,550,550,550);
+           // down();
+            //sleep(5);
+            //arms(-100);
         //move off wall
-            move(-100, -100, -100, -100);
+            move(-275, -275, 275, 275);
             //turn
-            move(-925, -925, 1010, 1010);
+            //move(-925, -925, 1010, 1010);
             //move to duck wheel
-            move(1110,1110,1110,1110);
+            move(1500,1500,1500,1500);
+            //turn to duck wheel
+           // move(300,300,-300,-300);
+            //to the duck wheel
+           // move(505,505,505,505);
             //stop
             move(0, 0, 0, 0);
+            sleep(50);
+            move(100,100,-100,-100);
 
             // raise arms and set bucket and flipper
             //bucketArm(1000,0.6);
@@ -69,19 +89,18 @@ public class O extends LinearOpMode {
            sleep(4000);*/
            //move to duck wheel
            // move(1000,1000,1000,1000);
-            duck(5000);
+            duck(3000);
             //move to square
-            arm.setPower(-.1);
-            arm2.setPower(.1);
+
             move(-200,-200,-200,-200);
             //turn after duck
-            move(450,-450,450,-450);
+            //strafe?
+            move(1000,-1000,1000,-1000);
             //go towards warehouse
-            move(-4700,-4700,-4700,-4700);
+            move(-6000,-6000,-6000,-6000);
             sleep(5);
-            arm.setPower(-.1);
-            arm2.setPower(.1);
-            sleep(13000);
+
+
             //move(-1000,-1000,-1000,-1000);
 
 
@@ -116,11 +135,11 @@ public class O extends LinearOpMode {
         leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-        rightRear.setPower(0.3);
-        rightFront.setPower(0.3);
+        rightRear.setPower(0.5);
+        rightFront.setPower(0.5);
 
-        leftFront.setPower(0.3);
-        leftRear.setPower(0.3);
+        leftFront.setPower(0.5);
+        leftRear.setPower(0.5);
 
         while (leftFront.isBusy() && leftRear.isBusy() && rightFront.isBusy() && rightRear.isBusy()) {
             sleep(50);
@@ -164,7 +183,7 @@ public class O extends LinearOpMode {
 }
     //==========================duck
     public void duck(int time){
-        duck.setPower(-.4);
+        duck.setPower(.4);
         sleep(time);
         duck.setPower(0);
 
@@ -172,22 +191,49 @@ public class O extends LinearOpMode {
 
 
     }
-    //----------------------Lift------------
-   public void arms(int encod){
+    //----------------------ARMS------------
+    public void arms(int encod) {
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         arm.setTargetPosition(encod);
 
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        arm.setPower(0.6);
-        arm2.setPower(-0.6);
-        while (arm.isBusy()){
+        arm.setPower(1);
+
+        while (arm.isBusy()) {
             sleep(50);
         }
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        arm.setPower(0);
+    }
+    //================Score
+    public void score() {
+        sleep(1000);
+        bucket.setPosition(0.4);
+        sleep(1500);
+        flipper.setPower(-1);
+        sleep(1500);
+        flipper.setPower(0);
+        sleep(1500);
+        bucket.setPosition(0.0);
+        sleep(500);
+
+    }
+    //===================down
+    public void down(){
+
+
+        arm.setTargetPosition(-10);
+
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        arm.setPower(-.5);
+
+        while (arm.isBusy()) {
+            sleep(50);
+        }
 
     }
 }

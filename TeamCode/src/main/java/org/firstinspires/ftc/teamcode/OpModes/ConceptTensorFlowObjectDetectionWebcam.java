@@ -32,7 +32,9 @@ package org.firstinspires.ftc.teamcode.OpModes;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -61,6 +63,11 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private DcMotor rightRear;
     private DcMotor leftFront;
     private DcMotor leftRear;
+    private DcMotor arm;
+    private DcMotor arm2;
+    private DcMotor duck;
+    private Servo bucket;
+    private CRServo flipper;
    // private Servo flipper;
     //private DcMotor liftMotor;
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
@@ -115,8 +122,11 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-      //  flipper = hardwareMap.get(Servo.class,"flipper");
-       // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+       arm= hardwareMap.get(DcMotorEx.class,"arm");
+
+        DcMotor duck = hardwareMap.get(DcMotor.class, "duck");
+        Servo bucket = hardwareMap.get(Servo.class,"bucket");
+        CRServo flipper = hardwareMap.get(CRServo.class,"flipper");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -158,13 +168,19 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
                         move(-100,-100,-100,-100);
+                        arms(-500);
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
                         move(1000,1000,1000,1000);
+                        flipper.setPower(-1);
+                        sleep(500);
+
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
                           move(10,10,-10,-10);
                           move(1000,1000,1000,1000);
+                          duck.setPower(1);
+                          sleep(500);
                         i++;
                       }
                       telemetry.update();
@@ -243,6 +259,21 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         rightFront.setPower(0);
         leftRear.setPower(0);
 
+
+    }
+    public void arms(int encod) {
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        arm.setTargetPosition(encod);
+        arm2.setTargetPosition(encod);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        arm.setPower(1);
+        arm2.setPower(1);
+        while (arm.isBusy()) {
+            sleep(50);
+        }
 
     }
 }

@@ -22,7 +22,7 @@ public class armTele extends LinearOpMode {
       arm2 = hardwareMap.get(DcMotorEx.class,"arm2");
       bucket = hardwareMap.get(Servo.class,"bucket");
       flipper = hardwareMap.get(CRServo.class, "flipper");
-      arm.setDirection(DcMotorSimple.Direction.REVERSE);
+      //arm.setDirection(DcMotorSimple.Direction.REVERSE);
       arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
       arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         waitForStart();
@@ -33,10 +33,10 @@ public class armTele extends LinearOpMode {
         telemetry.update();
 
         while (opModeIsActive()) {
-        EncoderControl(125, gamepad1.a);
-        EncoderControl(60, gamepad1.b);
-        EncoderControl(200, gamepad1.y);
-        EncoderControl(305,gamepad1.x);
+        EncoderControl(-900, gamepad1.a);
+        EncoderControl(-60, gamepad1.b);
+        EncoderControl(-200, gamepad1.y);
+        EncoderControl(-500,gamepad1.x);
             /*if(gamepad1.dpad_left) {
                 telemetry.addData("Encoder value", arm.getCurrentPosition());
                 telemetry.addData("Encoder value", arm2.getCurrentPosition());
@@ -93,8 +93,8 @@ public class armTele extends LinearOpMode {
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            arm.setPower(.2);
-            arm2.setPower(.2);
+            arm.setPower(.3);
+
             /*while (arm.isBusy() && arm2.isBusy()) {
                 sleep(500);
                 telemetry.addData("Encoder value", arm.getCurrentPosition());
@@ -106,7 +106,7 @@ public class armTele extends LinearOpMode {
                 sleep(1000);
                 bucket.setPosition(1.0);
                 sleep(1500);
-                flipper.setPower(1);
+                flipper.setPower(-1);
                 sleep(1500);
                 flipper.setPower(0);
                 sleep(1500);
@@ -126,8 +126,8 @@ public class armTele extends LinearOpMode {
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            arm.setPower(.2);
-            arm2.setPower(.2);
+            arm.setPower(.4);
+            arm2.setPower(.1);
             arm.setTargetPosition(0);
             arm2.setTargetPosition(0);
 
@@ -140,4 +140,6 @@ public class armTele extends LinearOpMode {
             arm2.setPower(0);
         }
     }
+    //==================move
+
 }
