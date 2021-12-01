@@ -64,7 +64,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private DcMotor leftFront;
     private DcMotor leftRear;
     private DcMotor arm;
-    private DcMotor arm2;
+
     private DcMotor duck;
     private Servo bucket;
     private CRServo flipper;
@@ -122,7 +122,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         leftRear = hardwareMap.get(DcMotor.class, "leftRear");
         rightFront = hardwareMap.get(DcMotor.class, "rightFront");
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
-       arm= hardwareMap.get(DcMotorEx.class,"arm");
+       arm  = hardwareMap.get(DcMotor.class,"arm");
 
         DcMotor duck = hardwareMap.get(DcMotor.class, "duck");
         Servo bucket = hardwareMap.get(Servo.class,"bucket");
@@ -147,7 +147,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(2.5, 16.0/9.0);
+            tfod.setZoom(1.0, 16.0/9.0);
         }
 
         /** Wait for the game to begin */
@@ -165,23 +165,25 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
+                      boolean isDuckDetected = false;
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                        move(-100,-100,-100,-100);
-                        arms(-500);
+
                         telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
                                 recognition.getLeft(), recognition.getTop());
-                        move(1000,1000,1000,1000);
-                        flipper.setPower(-1);
-                        sleep(500);
+
 
                         telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                                 recognition.getRight(), recognition.getBottom());
-                          move(10,10,-10,-10);
-                          move(1000,1000,1000,1000);
-                          duck.setPower(1);
-                          sleep(500);
+
                         i++;
+                        //check label to see if the camera now sees a duck
+                          if (recognition.getLabel().equals("Duck")){
+                              isDuckDetected= true;
+                              telemetry.addData("Object Detected","Duck");
+                          } else{
+                              isDuckDetected = false;
+                          }
                       }
                       telemetry.update();
                     }
@@ -263,14 +265,14 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     }
     public void arms(int encod) {
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         arm.setTargetPosition(encod);
-        arm2.setTargetPosition(encod);
+
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         arm.setPower(1);
-        arm2.setPower(1);
+
         while (arm.isBusy()) {
             sleep(50);
         }

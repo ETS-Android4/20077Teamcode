@@ -47,18 +47,18 @@ public class RedDuck extends LinearOpMode {
             //set motors to move to shipping tower.
             //straight
             //raise arm
-            arms(-500);
+            arms(-450);
             //move off wall
             move(-500,-500,-500,-500);
             //turn toward goal
-            move(300,300,-300,-300);
+            move(350,350,-350,-350);
             //move forward to goal
             move(-500,-500,-500,-500);
             score();
             //back away from goal
             move(500,500,500,500);
             //turn back straight
-            move(-300,-300,300,300);
+            move(-350,-350,350,350);
             //back to wall
             move(550,550,550,550);
             down();
@@ -70,11 +70,12 @@ public class RedDuck extends LinearOpMode {
             arms(-100);
             move(-100, -100, -100, -100);
             //turn
-           move(925, 925, -1010, -1010);
+           move(925, 925, -1000, -1000);
             //move to duck wheel
             move(1100,1100,1100,1100);
+            move(0,0,0,0);
             sleep(200);
-            move(20,20,20,20);
+            move(100,100,100,100);
             //stop
             move(0, 0, 0, 0);
 
@@ -96,9 +97,8 @@ public class RedDuck extends LinearOpMode {
 
             move(-200,-200,-200,-200);
             //turn after duck
-            move(200,200,-200,-200);
+            move(150,150,-150,-150);
             move(-500,-500,-500,-500);
-            move(-200,-200,200,200);
             //go towards warehouse
             move(-4700,-4700,-4700,-4700);
             sleep(5);
