@@ -27,14 +27,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.match;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -56,20 +54,18 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
+@Autonomous(name = "WebcamRedSquare", group = "Concept")
 
-public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
+public class WebcamRedSquare extends LinearOpMode {
     private DcMotor rightFront;
     private DcMotor rightRear;
     private DcMotor leftFront;
     private DcMotor leftRear;
     private DcMotor arm;
-
     private DcMotor duck;
     private Servo bucket;
     private CRServo flipper;
-   // private Servo flipper;
-    //private DcMotor liftMotor;
+  int duckNumber = 0;
   /* Note: This sample uses the all-objects Tensor Flow model (FreightFrenzy_BCDM.tflite), which contains
    * the following 4 detectable objects
    *  0: Ball,
@@ -124,9 +120,9 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         rightRear = hardwareMap.get(DcMotor.class, "rightRear");
        arm  = hardwareMap.get(DcMotor.class,"arm");
 
-        DcMotor duck = hardwareMap.get(DcMotor.class, "duck");
-        Servo bucket = hardwareMap.get(Servo.class,"bucket");
-        CRServo flipper = hardwareMap.get(CRServo.class,"flipper");
+         duck = hardwareMap.get(DcMotor.class, "duck");
+         bucket = hardwareMap.get(Servo.class,"bucket");
+        flipper = hardwareMap.get(CRServo.class,"flipper");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
@@ -153,6 +149,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
+
         waitForStart();
 
         if (opModeIsActive()) {
@@ -166,6 +163,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
                       boolean isDuckDetected = false;
+                      boolean markerDetected = false;
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
 
@@ -177,20 +175,106 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
                                 recognition.getRight(), recognition.getBottom());
 
                         i++;
-                        //check label to see if the camera now sees a duck
-                          if (recognition.getLabel().equals("Duck")){
+                        //check label to see if the camera now sees a duck and check the value of the Right to get the positon
+                          //top duck farthest right
+                          if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 444.0)
+                          {
                               isDuckDetected= true;
-                              telemetry.addData("Object Detected","Duck");
-                          } else{
+                              telemetry.addData("Object Detected"," Top Duck");
+                             //put your auto here
+                         duckNumber= -3000;
+
+
+
+
+                          } else {
                               isDuckDetected = false;
                           }
+                          //for the middle duck
+                              if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 290.0 && recognition.getRight() <= 420)
+                              {
+                                  isDuckDetected= true;
+                                  telemetry.addData("Object Detected"," Middle Duck");
+                                duckNumber = -2700;
+                              } else{
+                                  isDuckDetected = false;
+
+                          }
+                              //for the low duck, the one near the big red square
+                          if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 10 && recognition.getRight() <= 150)
+                          {
+                              isDuckDetected= true;
+                              telemetry.addData("Object Detected"," bottom Duck");
+                             duckNumber = -1200;
+                          } else{
+                              isDuckDetected = false;
+                              duckNumber = -1200;
+                          }
+                          //check label to see if the camera sees the mark
+                         // if (recognition.getLabel().equals("Mark")){
+                              markerDetected = true;
+
+                         // }else{
+                              markerDetected = false;
+
+                          //}
+                          if(isDuckDetected=false){
+                              duckNumber = -1200;
+                          }
+
                       }
                       telemetry.update();
                     }
+                    if(updatedRecognitions == null) {
+                        duckNumber=-1200;
+                    }
+                    }
+
                 }
+                arms(duckNumber);
+                //move off wall
+                move(-450,-450,-450,-450);
+                //turn toward goal
+                move(350,350,-350,-350);
+                //move forward to goal
+                move(-500,-500,-500,-500);
+                score();
+
+
+                //back away from goal
+                move(500,500,500,500);
+                //turn back straight
+                move(-350,-350,350,350);//was movefast
+                //back to wall
+                move(550,550,550,550);
+                down();
+
+
+
+                sleep(5);
+                //move off wall
+                arms(-100);
+                move(-100, -100, -100, -100);
+                //turn
+                move(925, 925, -1000, -1000);
+                //move to duck wheel
+                move(1100,1100,1100,1100);
+                sleep(200);
+                move(100,100,100,100);//was move slow
+                move(-50,-50,50,50);//was move slow
+
+               duck(4500);
+                move(-1200,1200,1200,-1200);
+                move(300,300,300,300);
+
+
+
+
+                sleep(13000);
+                //move(-1000,-1000,-1000,-1000);
             }
         }
-    }
+
 
     /**
      * Initialize the Vuforia localization engine.
@@ -276,6 +360,45 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
         while (arm.isBusy()) {
             sleep(50);
         }
+
+    }
+    //===================down
+    public void down(){
+
+
+        arm.setTargetPosition(-10);
+
+        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        arm.setPower(-.5);
+
+        while (arm.isBusy()) {
+            sleep(50);
+        }
+
+    }
+    //================Score
+    public void score() {
+        sleep(1000);
+        bucket.setPosition(0.2);
+        sleep(1500);
+        flipper.setPower(-1);
+        sleep(1500);
+        flipper.setPower(0);
+        sleep(1500);
+        bucket.setPosition(0.0);
+        sleep(500);
+
+    }
+    //==========================duck
+    public void duck(int time){
+        duck.setPower(-.4);
+        sleep(time);
+        duck.setPower(0);
+
+
+
 
     }
 }

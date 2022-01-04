@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.teamcode.match;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -34,7 +35,7 @@ public class RedDuck extends LinearOpMode {
         arm = hardwareMap.get(DcMotor.class, "arm");
 
         duck = hardwareMap.get(DcMotor.class, "duck");
-       // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
+        // liftMotor = hardwareMap.get(DcMotor.class,"liftMotor");
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -47,9 +48,9 @@ public class RedDuck extends LinearOpMode {
             //set motors to move to shipping tower.
             //straight
             //raise arm
-            arms(-450);
+            arms(-3000);
             //move off wall
-            move(-500,-500,-500,-500);
+            move(-450,-450,-450,-450);
             //turn toward goal
             move(350,350,-350,-350);
             //move forward to goal
@@ -58,7 +59,7 @@ public class RedDuck extends LinearOpMode {
             //back away from goal
             move(500,500,500,500);
             //turn back straight
-            move(-350,-350,350,350);
+            movefast(-350,-350,350,350);
             //back to wall
             move(550,550,550,550);
             down();
@@ -66,44 +67,34 @@ public class RedDuck extends LinearOpMode {
 
 
             sleep(5);
-        //move off wall
+            //move off wall
             arms(-100);
             move(-100, -100, -100, -100);
             //turn
-           move(925, 925, -1000, -1000);
+            move(925, 925, -1000, -1000);
             //move to duck wheel
             move(1100,1100,1100,1100);
-            move(0,0,0,0);
             sleep(200);
-            move(100,100,100,100);
-            //stop
-            move(0, 0, 0, 0);
+            moveslow(100,100,100,100);
+            moveslow(-50,-50,50,50);
 
-            // raise arms and set bucket and flipper
-            //bucketArm(1000,0.6);
-           /*bucket.setPosition(1.0);
-
-            flipper.setPower(-1);
-            sleep(400);
-            flipper.setPower(0);
-           bucket.setPosition(0.5);
-           bucket.setPosition(0.0);
-           sleep(4000);*/
-           //move to duck wheel
-           // move(1000,1000,1000,1000);
-            duck(3000);
-            //move to square
+            duck(4500);
 
 
-            move(-200,-200,-200,-200);
+
+            movefast(-200,-200,-200,-200);
             //turn after duck
             move(150,150,-150,-150);
+            //forward
             move(-500,-500,-500,-500);
+            //strafe
+            movefast(500, -500, -500, 500);
             //go towards warehouse
-            move(-4700,-4700,-4700,-4700);
+            movefast(-4700,-4700,-4700,-4700);
             sleep(5);
 
-
+            move(-250,-250,250,250);
+            move(-250,-250,-250,-250);
             sleep(13000);
             //move(-1000,-1000,-1000,-1000);
 
@@ -113,6 +104,49 @@ public class RedDuck extends LinearOpMode {
 
     }
 
+//=================movefast
+public void movefast(int rf, int rb, int lf, int lb) {
+    rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+    rightFront.setTargetPosition(rf);
+    rightRear.setTargetPosition(rb);
+    leftFront.setTargetPosition(lf);
+    leftRear.setTargetPosition(lb);
+
+    rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+    rightRear.setPower(0.7);
+    rightFront.setPower(0.7);
+
+    leftFront.setPower(0.7);
+    leftRear.setPower(0.7);
+
+    while (leftFront.isBusy() && leftRear.isBusy() && rightFront.isBusy() && rightRear.isBusy()) {
+        sleep(50);
+
+
+
+    }
+    rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    rightRear.setPower(0);
+    leftFront.setPower(0);
+    rightFront.setPower(0);
+    leftRear.setPower(0);
+
+
+}
 
     //----------------------------encoder-----------------
     public void move(int rf, int rb, int lf, int lb) {
@@ -170,11 +204,10 @@ public class RedDuck extends LinearOpMode {
     }
     //----------------------ARMS------------
     public void arms(int encod) {
-        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         arm.setTargetPosition(encod);
 
-        arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         arm.setPower(1);
@@ -188,13 +221,13 @@ public class RedDuck extends LinearOpMode {
     public void score() {
         sleep(1000);
         bucket.setPosition(0.4);
-        sleep(1500);
-        flipper.setPower(-1);
-        sleep(1500);
-        flipper.setPower(0);
-        sleep(1500);
-        bucket.setPosition(0.0);
         sleep(500);
+        flipper.setPower(-1);
+        sleep(1000);
+        flipper.setPower(0);
+        sleep(500);
+        bucket.setPosition(0.0);
+
 
     }
     //===================down
@@ -213,5 +246,49 @@ public class RedDuck extends LinearOpMode {
         }
 
     }
+    //----------------------------MOVESLOW-----------------
+    public void moveslow(int rf, int rb, int lf, int lb) {
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
+        rightFront.setTargetPosition(rf);
+        rightRear.setTargetPosition(rb);
+        leftFront.setTargetPosition(lf);
+        leftRear.setTargetPosition(lb);
+
+        rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
+        rightRear.setPower(0.3);
+        rightFront.setPower(0.3);
+
+        leftFront.setPower(0.3);
+        leftRear.setPower(0.3);
+
+        while (leftFront.isBusy() && leftRear.isBusy() && rightFront.isBusy() && rightRear.isBusy()) {
+            sleep(50);
+
+
+
+        }
+        rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftRear.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        rightRear.setPower(0);
+        leftFront.setPower(0);
+        rightFront.setPower(0);
+        leftRear.setPower(0);
+
+
+    }
+
 }
 

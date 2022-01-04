@@ -1,22 +1,19 @@
+package org.firstinspires.ftc.teamcode.match;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
-package org.firstinspires.ftc.teamcode.OpModes;
+import java.text.DecimalFormat;
 
-
-
-
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-        import com.qualcomm.robotcore.hardware.CRServo;
-        import com.qualcomm.robotcore.hardware.DcMotor;
-        import com.qualcomm.robotcore.hardware.DcMotorEx;
-        import com.qualcomm.robotcore.hardware.DcMotorSimple;
-        import com.qualcomm.robotcore.hardware.Servo;
-
-        import java.text.DecimalFormat;
 
 @TeleOp
-public class mecha2 extends LinearOpMode {
+
+public class Mecha2 extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Declare our motors
@@ -26,9 +23,10 @@ public class mecha2 extends LinearOpMode {
         DcMotor rightFront = hardwareMap.dcMotor.get("rightFront");
         DcMotor rightRear = hardwareMap.dcMotor.get("rightRear");
         DcMotorEx arm = (DcMotorEx) hardwareMap.dcMotor.get("arm");
-       // DcMotor arm2 = hardwareMap.dcMotor.get("arm2");
+        // DcMotor arm2 = hardwareMap.dcMotor.get("arm2");
         DcMotor duck = hardwareMap.dcMotor.get("duck");
         Servo bucket = hardwareMap.servo.get("bucket");
+        Servo cap = hardwareMap.servo.get("cap");
         CRServo flipper = hardwareMap.crservo.get("flipper");
         double position = 0.5;
         boolean buttonDown = false;
@@ -36,20 +34,20 @@ public class mecha2 extends LinearOpMode {
         int armPos = 0; //sets arm postion default ot 0
         int pos = 0;
         int pos2 = 0;
+        double          CapOffset  = 0.0 ;                  // Servo mid position
+        final double    Cap_SPEED  = 0.02 ;
 
-        // Reverse the right side motors
-        // Reverse left motors if you are using NeveRests
         rightFront.setDirection(DcMotorSimple.Direction.REVERSE);
         rightRear.setDirection(DcMotorSimple.Direction.REVERSE);
-        // arm.setDirection(DcMotorSimple.Direction.REVERSE);
+
 
         df = new DecimalFormat();
-        df.setMaximumFractionDigits(2); arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        df.setMaximumFractionDigits(2);
+        arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         arm.setMode((DcMotor.RunMode.RUN_USING_ENCODER));
         armPos = arm.getCurrentPosition();//stores current postion
 
-        //arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        //arm2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         waitForStart();
 
         if (isStopRequested()) return;
@@ -58,7 +56,7 @@ public class mecha2 extends LinearOpMode {
             double y = -gamepad1.left_stick_y; // Remember, this is reversed!
             double x = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double rx = gamepad1.right_stick_x;
-
+            double armPower= -gamepad2.right_stick_y;
             // Denominator is the largest motor power (absolute value) or 1
             // This ensures all the powers maintain the same ratio, but only when
             // at least one is out of the range [-1, 1]
@@ -72,24 +70,27 @@ public class mecha2 extends LinearOpMode {
             leftRear.setPower(backLeftPower);
             rightFront.setPower(frontRightPower);
             rightRear.setPower(backRightPower);
-//---------------arm
-            double armMotorPower = gamepad2.right_trigger - gamepad2.left_trigger;
+//
+            arm.setPower(armPower);
+            //!!=========arm simple=======
+            if (gamepad2.left_trigger >= 0.001) {
+                arm.setPower(-1);
 
-            if (armMotorPower >0.1){
-                armPos += gamepad2.right_trigger * 5;
-            }
-            if (armMotorPower < -0.1){
-                armPos -= gamepad2.left_trigger *5;
+
+            } else if (gamepad2.right_trigger >= 0.001) {
+                arm.setPower(1);
+
+            } else {
+                arm.setPower(0);
+                arm.setPower(0);
+
             }
 
-            arm.setTargetPosition(armPos);
-            arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            arm.setPower(0.4);
 
             //---duck
-            if (gamepad2.b) {
+            if (gamepad2.a) {
                 duck.setPower(-0.7);
-            } else if (gamepad2.a) {
+            } else if (gamepad2.b) {
                 duck.setPower(0.7);
             } else {
                 duck.setPower(0);
@@ -100,8 +101,8 @@ public class mecha2 extends LinearOpMode {
                     position -= 0.05;
                     bucket.setPosition(position);
                 }
-                buttonDown = true;}
-             else if (gamepad2.y) {
+                buttonDown = true;
+            } else if (gamepad2.y) {
                 if (!buttonDown) {
                     position += 0.05;
                     bucket.setPosition(position);
@@ -111,93 +112,38 @@ public class mecha2 extends LinearOpMode {
                 buttonDown = false;
             }
             telemetry.addData("position: ", df.format(position));
-
-            if(gamepad2.left_bumper){
-                flipper.setPower(1);
-            }
-            else{
-                flipper.setPower(0);
-            }
-            if(gamepad2.right_bumper){
+            //Flipper
+            if (gamepad2.left_bumper) {
                 flipper.setPower(-1);
-            }
-            else{
+            } else {
                 flipper.setPower(0);
             }
-            if(gamepad2.dpad_left) {
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
-
-
-                telemetry.update();
-
-
-
-                arm.setTargetPosition(-125);
-
-
-
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-                arm.setPower(.4);
-
-
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
-
-
-
-                telemetry.update();
+            if (gamepad2.right_bumper) {
+                flipper.setPower(1);
+            } else {
+                flipper.setPower(0);
             }
-            if(gamepad2.dpad_right) {
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
+            //CAP arm
+            if (gamepad2.dpad_down) {
+             cap.setPosition(0.2);
 
-
-                telemetry.update();
-
-
-
-                arm.setTargetPosition(-250);
-
-
-
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
-                arm.setPower(.4);
-
-
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
-
-
-
-                telemetry.update();
             }
+            if (gamepad2.dpad_up) {
+                cap.setPosition(0.8);
 
-
-            if(gamepad2.dpad_up) {
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
-
-
-                telemetry.update();
-
-
-
-                arm.setTargetPosition(-500);
-
-
-                arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                arm.setPower(.7);
-
-
-                telemetry.addData("Encoder value", arm.getCurrentPosition());
-
-
-
-                telemetry.update();
             }
+            if (gamepad2.dpad_right) {
+              cap.setPosition(cap.getPosition()-0.01);
+                }
 
-
+            if (gamepad2.dpad_left){
+                cap.setPosition(cap.getPosition()+0.01);
+            }
+           // if (gamepad2.dpad_right)
+               // CapOffset += Cap_SPEED;
+            //else if (gamepad2.dpad_left)
+               // CapOffset -= Cap_SPEED;
+            //CapOffset = Range.clip(CapOffset, -0.5, 0.5);
         }
     }
 }
