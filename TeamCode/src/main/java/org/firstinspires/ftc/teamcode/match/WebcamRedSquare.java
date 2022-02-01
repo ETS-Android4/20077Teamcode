@@ -77,12 +77,10 @@ public class WebcamRedSquare extends LinearOpMode {
    *  FreightFrenzy_BC.tflite  0: Ball,  1: Cube
    *  FreightFrenzy_DM.tflite  0: Duck,  1: Marker
    */
-    private static final String TFOD_MODEL_ASSET = "FreightFrenzy_BCDM.tflite";
+    private static final String TFOD_MODEL_ASSET = "soloCup.tflite";
     private static final String[] LABELS = {
-      "Ball",
-      "Cube",
-      "Duck",
-      "Marker"
+      "Solo",
+      "solo"
     };
 
     /*
@@ -162,8 +160,8 @@ public class WebcamRedSquare extends LinearOpMode {
                       telemetry.addData("# Object Detected", updatedRecognitions.size());
                       // step through the list of recognitions and display boundary info.
                       int i = 0;
-                      boolean isDuckDetected = false;
-                      boolean markerDetected = false;
+                      boolean issoloDetected = false;
+
                       for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
 
@@ -177,9 +175,9 @@ public class WebcamRedSquare extends LinearOpMode {
                         i++;
                         //check label to see if the camera now sees a duck and check the value of the Right to get the positon
                           //top duck farthest right
-                          if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 444.0)
+                          if (recognition.getLabel().equals("solo") && recognition.getRight() >= 444.0)
                           {
-                              isDuckDetected= true;
+                              issoloDetected= true;
                               telemetry.addData("Object Detected"," Top Duck");
                              //put your auto here
                          duckNumber= -3000;
@@ -188,37 +186,37 @@ public class WebcamRedSquare extends LinearOpMode {
 
 
                           } else {
-                              isDuckDetected = false;
+                              issoloDetected = false;
                           }
                           //for the middle duck
-                              if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 290.0 && recognition.getRight() <= 420)
+                              if (recognition.getLabel().equals("solo") && recognition.getRight() >= 290.0 && recognition.getRight() <= 420)
                               {
-                                  isDuckDetected= true;
+                                  issoloDetected= true;
                                   telemetry.addData("Object Detected"," Middle Duck");
                                 duckNumber = -2700;
                               } else{
-                                  isDuckDetected = false;
+                                  issoloDetected = false;
 
                           }
                               //for the low duck, the one near the big red square
-                          if (recognition.getLabel().equals("Duck") && recognition.getRight() >= 10 && recognition.getRight() <= 150)
+                          if (recognition.getLabel().equals("solo") && recognition.getRight() >= 10 && recognition.getRight() <= 150)
                           {
-                              isDuckDetected= true;
+                              issoloDetected= true;
                               telemetry.addData("Object Detected"," bottom Duck");
                              duckNumber = -1200;
                           } else{
-                              isDuckDetected = false;
+                              issoloDetected = false;
                               duckNumber = -1200;
                           }
                           //check label to see if the camera sees the mark
                          // if (recognition.getLabel().equals("Mark")){
-                              markerDetected = true;
+                              //markerDetected = true;
 
                          // }else{
-                              markerDetected = false;
+                              //markerDetected = false;
 
                           //}
-                          if(isDuckDetected=false){
+                          if(issoloDetected=false){
                               duckNumber = -1200;
                           }
 

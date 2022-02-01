@@ -48,7 +48,7 @@ public class RedScore extends LinearOpMode {
             //set motors to move to shipping tower.
             //straight
             //raise arm
-            arms(-800);
+            arms(-2326);
             //move off wall
             movefast(-450,-450,-450,-450);
             //turn toward goal
@@ -79,7 +79,7 @@ public class RedScore extends LinearOpMode {
 
             bucket.setPosition(0.0);
             flipper.setPower(0);
-            arms(-800);
+            arms(-3000);
             //strafe to wall
             movefast(450, -450, -450, 450);
             //move back
@@ -111,7 +111,7 @@ public class RedScore extends LinearOpMode {
 
             bucket.setPosition(0.0);
             flipper.setPower(0);
-            arms(-800);
+            arms(-3000);
             //strafe to wall
             movefast(450, -450, -450, 450);
             //move back
@@ -258,7 +258,7 @@ public void movefast(int rf, int rb, int lf, int lb) {
     //================Score
     public void score() {
 
-        bucket.setPosition(0.2);
+        bucket.setPosition(0.4);
 
         flipper.setPower(-1);
         sleep(1000);

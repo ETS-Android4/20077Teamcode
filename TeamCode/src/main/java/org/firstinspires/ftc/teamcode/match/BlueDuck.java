@@ -50,23 +50,22 @@ public class BlueDuck extends LinearOpMode {
             //move off wall
             movefast(-450, -450, -450, -450);
             //turn toward goal
-            movefast(-350, -350, 350, 350);
+            movefast(-320, -320, 320, 320);
             //move forward to goal
-            move(-500, -500, -500, -500);
+            move(-550, -550, -550, -550);
             score();
 
-            move(-275, -275, 275, 275);
+            move(-250, -250, 250, 250);
             // down();
             sleep(5);
 
             move(1700, 1700, 1700, 1700);
 
             //down();
-            move(0, 0, 0, 0);
             //arms(-100);
             sleep(50);
-            moveslow(100, 100, -100, -100);
-            moveslow(20, 20, 20, 20);
+            moveslow(90, 90, -90, -90);
+            moveslow(50, 50, 50, 50);
 
             //spin the duck
             duck(3000);
@@ -79,10 +78,12 @@ public class BlueDuck extends LinearOpMode {
             //strafe?
             move(-2000, 2000, 2000, -2000);
             down();
-           // moveslow(500, -500, -500, 500);
+            movefast(-1000,1000,1000,-1000);
+            //moveslow(500, -500, -500, 500);
             //move(200, -200, 200, -200);
             //go towards warehouse
-            movefast(-6000, -6000, -6000, -6000);
+            movefast(-500,500,500,-500);
+            movefast(-4000, -4000, -4000, -4000);
             sleep(8000);
 
 
@@ -191,7 +192,7 @@ public class BlueDuck extends LinearOpMode {
     //================Score
     public void score() {
         sleep(1000);
-        bucket.setPosition(0.4);
+        bucket.setPosition(0.45);
         sleep(1500);
         flipper.setPower(-1);
         sleep(1500);

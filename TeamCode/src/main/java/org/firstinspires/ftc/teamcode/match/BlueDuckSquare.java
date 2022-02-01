@@ -78,13 +78,12 @@ public class BlueDuckSquare extends LinearOpMode {
             //turn after duck
             //strafe?
             move(1600, -1600, -1600, 1600);
-            move(-200,-200,200,200);
-            move(-20,-20,-20,-20);
+            move(-445,-445,-445,-445);
             down();
            // moveslow(500, -500, -500, 500);
             //move(200, -200, 200, -200);
             //go towards warehouse
-            sleep(8000);
+            sleep(15000);
 
 
             //move(-1000,-1000,-1000,-1000);
@@ -192,14 +191,13 @@ public class BlueDuckSquare extends LinearOpMode {
     //================Score
     public void score() {
         sleep(1000);
-        bucket.setPosition(0.4);
-        sleep(1500);
+        bucket.setPosition(0.5);
+        sleep(500);
         flipper.setPower(-1);
         sleep(1500);
         flipper.setPower(0);
-        sleep(1500);
-        bucket.setPosition(0.0);
         sleep(500);
+        bucket.setPosition(0.0);
 
     }
 

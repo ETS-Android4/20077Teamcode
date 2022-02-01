@@ -48,7 +48,7 @@ public class RedSquare extends LinearOpMode {
             //set motors to move to shipping tower.
             //straight
             //raise arm
-            arms(-3000);
+            arms(-2326);
             //move off wall
             move(-450,-450,-450,-450);
             //turn toward goal

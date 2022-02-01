@@ -79,6 +79,7 @@ public class RedDuckSquare extends LinearOpMode {
             moveslow(100,100,100,100);
             moveslow(-50,-50,50,50);
             duck(4500);
+            //move()
             move(-200,-200,-200,-200);
             move(1000,1000,-1000,-1000);
             move(-400,-400,-400,-400);
@@ -133,11 +134,11 @@ public void movefast(int rf, int rb, int lf, int lb) {
     leftRear.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
 
-    rightRear.setPower(0.9);
-    rightFront.setPower(0.9);
+    rightRear.setPower(0.7);
+    rightFront.setPower(0.7);
 
-    leftFront.setPower(0.9);
-    leftRear.setPower(0.9);
+    leftFront.setPower(0.7);
+    leftRear.setPower(0.7);
 
     while (leftFront.isBusy() && leftRear.isBusy() && rightFront.isBusy() && rightRear.isBusy()) {
         sleep(50);

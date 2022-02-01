@@ -52,16 +52,16 @@ public class RedDuck extends LinearOpMode {
             //move off wall
             move(-450,-450,-450,-450);
             //turn toward goal
-            move(350,350,-350,-350);
+            move(328,328,-328,-328);
             //move forward to goal
-            move(-500,-500,-500,-500);
+            move(-610,-610,-610,-610);//change after shorten
             score();
             //back away from goal
-            move(500,500,500,500);
+            move(675,675,675,675);//change after shorten
             //turn back straight
             movefast(-350,-350,350,350);
             //back to wall
-            move(550,550,550,550);
+            move(650,650,650,650);
             down();
 
 
@@ -71,26 +71,29 @@ public class RedDuck extends LinearOpMode {
             arms(-100);
             move(-100, -100, -100, -100);
             //turn
-            move(925, 925, -1000, -1000);
+            move(900, 900, -900, -900);
             //move to duck wheel
             move(1100,1100,1100,1100);
             sleep(200);
-            moveslow(100,100,100,100);
-            moveslow(-50,-50,50,50);
-
-            duck(4500);
-
+            moveslow(110,110,110,110);
+            move(-15,-15,15,15);
+            duck(3500);
 
 
-            movefast(-200,-200,-200,-200);
+
+            movefast(-400,-400,-400,-400);
             //turn after duck
             move(150,150,-150,-150);
             //forward
             move(-500,-500,-500,-500);
             //strafe
-            movefast(500, -500, -500, 500);
+            movefast(700, -700, -700, 700);//changed after shorten
             //go towards warehouse
-            movefast(-4700,-4700,-4700,-4700);
+            movefast(-1400,-1400,-1400,-1400);
+            movefast(400, -400, -400, 400);//changed after shorten
+            movefast(-1100,-1100,-1100,-1100);
+            movefast(400, -400, -400, 400);
+            movefast(-800,-800,-800,-800);
             sleep(5);
 
             move(-250,-250,250,250);
@@ -194,7 +197,7 @@ public void movefast(int rf, int rb, int lf, int lb) {
 
     //==========================duck
     public void duck(int time){
-        duck.setPower(-.4);
+        duck.setPower(-.55);
         sleep(time);
         duck.setPower(0);
 
@@ -220,10 +223,10 @@ public void movefast(int rf, int rb, int lf, int lb) {
     //================Score
     public void score() {
         sleep(1000);
-        bucket.setPosition(0.4);
+        bucket.setPosition(0.5);
         sleep(500);
         flipper.setPower(-1);
-        sleep(1000);
+        sleep(1500);
         flipper.setPower(0);
         sleep(500);
         bucket.setPosition(0.0);
