@@ -54,9 +54,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "WebcamRedSquare", group = "Concept")
+@Autonomous(name = "WebcamRedScoreandPark", group = "Concept")
 
-public class WebcamRedSquare extends LinearOpMode
+public class WebcamRedScoreandPark extends LinearOpMode
 {
     private DcMotor rightFront;
     private DcMotor rightRear;
@@ -177,7 +177,7 @@ public class WebcamRedSquare extends LinearOpMode
 
                             //check label to see if the camera now sees a duck and check the value of the Right to get the positon
                             //top duck farthest right
-                            if (recognition.getLabel().equals("Solo") && recognition.getRight() >= 460.0) {
+                            if (recognition.getLabel().equals("Solo") && recognition.getRight() >= 485.0) {
                                 isSoloDetected = true;
                                 telemetry.addData("Object Detected", " Top Cup");
                                 //put your auto here
@@ -185,7 +185,7 @@ public class WebcamRedSquare extends LinearOpMode
                                 duckScore  = 0.5;
                             }
                             //for the middle duck
-                            else if (recognition.getLabel().equals("Solo") && recognition.getRight() >= 260.0 && recognition.getRight() <= 450.0) {
+                            else if (recognition.getLabel().equals("Solo") && recognition.getRight() >= 260.0 && recognition.getRight() <= 480.0) {
                                 isSoloDetected = true;
                                 telemetry.addData("Object Detected", " Middle Duck");
 
@@ -211,46 +211,33 @@ public class WebcamRedSquare extends LinearOpMode
                 }
 
                 arms(duckNumber);
-
-
-                telemetry.addData("dm", arm.getCurrentPosition());
                 //move off wall
-                move(-450, -450, -450, -450);
+                movefast(-450,-450,-450,-450);
                 //turn toward goal
-                move(400, 400, -400, -400);
+                move(-350,-350,350,350);
                 //move forward to goal
-                move(-740, -740, -740, -740);
+                move(-500,-500,-500,-500);
                 score(duckScore);
-
-
                 //back away from goal
-                move(675,675,675,675);
-                //turn back straight
-                movefast(-350,-350,350,350);//was movefast
+                movefast(500,500,500,500);
+                //turn to line up to warehouse
+                movefast(350,350,-350,-350);
                 //back to wall
-                move(650,650,650,650);
+                movefast(1000,1000,-1000,-1000);
+                //lower arm for getting block
                 down();
+                // bucket.setPosition(0.25);
+                //strafe
+                movefast(1100, -1100, -1100, 1100);
+                //move into warehouse
+                //flipper.setPower(1);
+                movefast(-2500,-2500,-2500,-2500);
+                //collect block
+                move(-500,-500,-500,-500);
+                move(-500,-500,-500,-500);
 
+                sleep(5000000);
 
-                sleep(5);
-                //move off wall
-
-                move(-100, -100, -100, -100);
-                //turn
-                move(925, 925, -1000, -1000);
-                //move to duck wheel
-                move(1100, 1100, 1100, 1100);
-                sleep(200);
-                move(100, 100, 100, 100);//was move slow
-                move(-50, -50, 50, 50);//was move slow
-
-                duck(4500);
-                move(-1200, 1200, 1200, -1200);
-                move(300, 300, 300, 300);
-
-
-                sleep(13000);
-                //move(-1000,-1000,-1000,-1000);
             }
         }
     }
@@ -347,7 +334,7 @@ public class WebcamRedSquare extends LinearOpMode
     //===================down
     public void down()
         {
-            arm.setTargetPosition(-100);
+            arm.setTargetPosition(-10);
             arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             arm.setPower(-.5);
                 while (arm.isBusy())
@@ -357,17 +344,17 @@ public class WebcamRedSquare extends LinearOpMode
         }
     //================Score
     public void score(double duckScore)
-    {
-        sleep(1000);
-        bucket.setPosition(duckScore);
-        sleep(1500);
-        flipper.setPower(-1);
-        sleep(1500);
-        flipper.setPower(0);
-        sleep(1500);
-        bucket.setPosition(0.0);
-        sleep(500);
-    }
+        {
+            sleep(1000);
+            bucket.setPosition(duckScore);
+            sleep(1500);
+            flipper.setPower(-1);
+            sleep(1500);
+            flipper.setPower(0);
+            sleep(1500);
+            bucket.setPosition(0.0);
+            sleep(500);
+        }
     //==========================duck
     public void duck(int time)
         {
@@ -461,4 +448,5 @@ public class WebcamRedSquare extends LinearOpMode
 
 
     }
+
 }

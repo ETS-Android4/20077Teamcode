@@ -54,9 +54,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "WebcamRedSquare", group = "Concept")
+@Autonomous(name = "WebcamBlueDuck", group = "Concept")
 
-public class WebcamRedSquare extends LinearOpMode
+public class WebcamBlueDuck extends LinearOpMode
 {
     private DcMotor rightFront;
     private DcMotor rightRear;
@@ -213,44 +213,55 @@ public class WebcamRedSquare extends LinearOpMode
                 arms(duckNumber);
 
 
-                telemetry.addData("dm", arm.getCurrentPosition());
                 //move off wall
-                move(-450, -450, -450, -450);
+                movefast(-450, -450, -450, -450);
                 //turn toward goal
-                move(400, 400, -400, -400);
+                movefast(-400, -400, 400, 400);
                 //move forward to goal
                 move(-740, -740, -740, -740);
                 score(duckScore);
 
-
-                //back away from goal
-                move(675,675,675,675);
-                //turn back straight
-                movefast(-350,-350,350,350);//was movefast
-                //back to wall
-                move(650,650,650,650);
-                down();
-
-
+                move(-150, -150, 150, 150);
+                // down();
                 sleep(5);
-                //move off wall
+                //this is was 1700 changed for webcam centering
+                move(1700, 1700, 1700, 1700);
 
-                move(-100, -100, -100, -100);
-                //turn
-                move(925, 925, -1000, -1000);
-                //move to duck wheel
-                move(1100, 1100, 1100, 1100);
-                sleep(200);
-                move(100, 100, 100, 100);//was move slow
-                move(-50, -50, 50, 50);//was move slow
+                //down();
+                //arms(-100);
+                sleep(50);
+                moveslow(100, 100, -100, -100);
 
-                duck(4500);
-                move(-1200, 1200, 1200, -1200);
-                move(300, 300, 300, 300);
+                //moveslow(150, 150, 150, 150);
+                //move(-150,-150,150,150);
+                //spin the duck
+
+                moveslow(-40, -40, -40, -40);
+                duck(3000);
 
 
-                sleep(13000);
+                //moveslow(50,50,-50,-50);
+                //duck(2000);
+                //move to square
+
+                //  move(-200, -200, -200, -200);
+                //turn after duck
+                //strafe?
+                move(-1000, 1000, 1000, -1000);
+                move(-200,-200,200,200);
+                down();
+               // move(-250,-250,250,250);
+                movefast(-1000,1000,1000,-1000);
+                //moveslow(500, -500, -500, 500);
+                //move(200, -200, 200, -200);
+                //go towards warehouse
+                movefast(-500,500,500,-500);
+                movefast(-3500, -3500, -3500, -3500);
+                sleep(8000);
+
+
                 //move(-1000,-1000,-1000,-1000);
+
             }
         }
     }
@@ -369,12 +380,14 @@ public class WebcamRedSquare extends LinearOpMode
         sleep(500);
     }
     //==========================duck
-    public void duck(int time)
-        {
-            duck.setPower(-.4);
-            sleep(time);
-            duck.setPower(0);
-        }
+
+    public void duck(int time) {
+        duck.setPower(.6);
+        sleep(time);
+        duck.setPower(0);
+
+
+    }
     //=================movefast
     public void movefast(int rf, int rb, int lf, int lb) {
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

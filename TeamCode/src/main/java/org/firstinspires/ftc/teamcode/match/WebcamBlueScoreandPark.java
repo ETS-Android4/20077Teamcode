@@ -54,9 +54,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "WebcamRedSquare", group = "Concept")
+@Autonomous(name = "WebcamBlueScoreandPark", group = "Concept")
 
-public class WebcamRedSquare extends LinearOpMode
+public class WebcamBlueScoreandPark extends LinearOpMode
 {
     private DcMotor rightFront;
     private DcMotor rightRear;
@@ -213,44 +213,33 @@ public class WebcamRedSquare extends LinearOpMode
                 arms(duckNumber);
 
 
-                telemetry.addData("dm", arm.getCurrentPosition());
-                //move off wall
-                move(-450, -450, -450, -450);
+                movefast(-450,-450,-450,-450);
                 //turn toward goal
-                move(400, 400, -400, -400);
+                movefast(400,400,-400,-400);
                 //move forward to goal
-                move(-740, -740, -740, -740);
+                movefast(-640,-640,-640,-640);
                 score(duckScore);
-
-
                 //back away from goal
-                move(675,675,675,675);
-                //turn back straight
-                movefast(-350,-350,350,350);//was movefast
+                movefast(675,675,675,675);
+                //turn to line up to warehouse
+                movefast(-350,-350,350,350);
                 //back to wall
-                move(650,650,650,650);
+                movefast(-1000,-1000,1000,1000);
+                //lower arm for getting block
+
                 down();
 
+                //strafe
+                movefast(-1100, 1100, 1100, -1100);
+                //move into warehouse
+                //flipper.setPower(1);
+                movefast(-2200,-2200,-2200,-2200);
+                //collect block
+                move(500,500,-500,-500);
+                move(-500,-500,-500,-500);
 
-                sleep(5);
-                //move off wall
+                sleep(200000);
 
-                move(-100, -100, -100, -100);
-                //turn
-                move(925, 925, -1000, -1000);
-                //move to duck wheel
-                move(1100, 1100, 1100, 1100);
-                sleep(200);
-                move(100, 100, 100, 100);//was move slow
-                move(-50, -50, 50, 50);//was move slow
-
-                duck(4500);
-                move(-1200, 1200, 1200, -1200);
-                move(300, 300, 300, 300);
-
-
-                sleep(13000);
-                //move(-1000,-1000,-1000,-1000);
             }
         }
     }

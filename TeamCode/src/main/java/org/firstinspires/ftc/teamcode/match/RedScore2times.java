@@ -48,13 +48,13 @@ public class RedScore2times extends LinearOpMode {
             //set motors to move to shipping tower.
             //straight
             //raise arm
-            arms(-2326);
+            arms(-3000);
             //move off wall
             movefast(-450,-450,-450,-450);
             //turn toward goal
-            move(-350,-350,350,350);
+            movefast(-350,-350,350,350);
             //move forward to goal
-            move(-500,-500,-500,-500);
+            movefast(-500,-500,-500,-500);
             score();
             //back away from goal
             movefast(500,500,500,500);
@@ -75,23 +75,22 @@ public class RedScore2times extends LinearOpMode {
            // movefast(-250, 250, 250, -250);
             //movefast(250, -250, -250, 250);
             //updown
-            movefast(-500,-500,-500,-500);
-            movefast(500,500,500,500);
+            move(-500,-500,-500,-500);
+            move(500,500,500,500);
 
             bucket.setPosition(0.0);
             flipper.setPower(0);
-            arms(-2326);
+            arms(-3000);
             //strafe to wall
-            move(450, -450, -450, 450);
+            movefast(650, -650, -650, 650);
             //move back
             movefast(2000,2000,2000,2000);
             //turn
-            move(-1000,-1000,1000,1000);
+            movefast(-1000,-1000,1000,1000);
             //move forward
             movefast(-800,-800,-800,-800);
             //turn to goal
-            movefast(-500,-500,500,500);
-            movefast(-100,-100,-100,-100);
+            movefast(-300,-300,300,300);
             score();
             //turn back
             movefast(350,350,-350,-350);
@@ -104,8 +103,8 @@ public class RedScore2times extends LinearOpMode {
             down();
 
             movefast(-2000,-2000,-2000,-2000);
-           move(500,500,-500,-500);
-           move(-500,-500,-500,500);
+           movefast(500,500,-500,-500);
+           movefast(-500,-500,-500,500);
 
             sleep(5000000);
 
@@ -231,7 +230,8 @@ public void movefast(int rf, int rb, int lf, int lb) {
     //================Score
     public void score() {
 
-        bucket.setPosition(0.4);
+        bucket.setPosition(0.5);
+        sleep(10);
 
         flipper.setPower(-1);
         sleep(1500);
